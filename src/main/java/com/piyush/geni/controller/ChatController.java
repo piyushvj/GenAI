@@ -3,6 +3,7 @@ package com.piyush.geni.controller;
 import com.piyush.geni.advisor.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -21,7 +22,15 @@ public class ChatController {
     Resource userPromptTemplate;
 
     public ChatController(ChatClient.Builder chatClientBuilder) {
+
+        ChatOptions chatOptions = ChatOptions
+                .builder()
+                .maxTokens(10)
+                .temperature(0.8)
+                .build();
+
         this.chatClient = chatClientBuilder
+                .defaultOptions(chatOptions)
                 .defaultAdvisors(new SimpleLoggerAdvisor())
                 .defaultAdvisors(new TokenUsageAuditAdvisor())
                 .defaultSystem("""
@@ -34,6 +43,8 @@ public class ChatController {
 
     @GetMapping("/chat")
     public String chat(@RequestParam("message") String message) {
+
+
         return chatClient
                 .prompt()
                 .system("""

@@ -30,7 +30,7 @@ public class TokenUsageAuditAdvisor implements CallAdvisor {
 
     @Override
     public String getName() {
-        return "";
+        return "TokenUsageAuditAdvisor";
     }
 
     @Override
