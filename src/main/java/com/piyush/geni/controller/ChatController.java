@@ -1,5 +1,6 @@
 package com.piyush.geni.controller;
 
+import com.piyush.geni.advisor.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -22,6 +23,7 @@ public class ChatController {
     public ChatController(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder
                 .defaultAdvisors(new SimpleLoggerAdvisor())
+                .defaultAdvisors(new TokenUsageAuditAdvisor())
                 .defaultSystem("""
                         you are an HR assistant. Your role is to help employees with the questions related to HR policies.
                         If a user asks for help with anything outside of these topics,
